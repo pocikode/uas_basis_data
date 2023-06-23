@@ -1,0 +1,24 @@
+{
+    "name": "pocikode/uas_basis_data",
+    "description": "Tugas UAS Basis Data Semester 4 UPJ",
+    "type": "project",
+    "require": {
+        "erickfirmo/router": "^1.1",
+        "twig/twig": "^3.0",
+        "vlucas/phpdotenv": "^5.5"
+    },
+    "authors": [
+        {
+            "name": "Agus Supriyatna (pocikode)"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "files": ["app/helpers.php"]
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^6.0"
+    }
+}
