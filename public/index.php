@@ -7,16 +7,23 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 
 use App\Controllers\HomeController;
+use App\Controllers\KRSController;
 use App\Controllers\MahasiswaController;
 
 $dotenv = \Dotenv\Dotenv::createMutable(dirname(__DIR__));
 $dotenv->load();
 
 $router = new \App\Router;
+
 $router->get('/', HomeController::class, 'index');
 $router->get('/mahasiswa', MahasiswaController::class, 'index');
 $router->post('/mahasiswa/store', MahasiswaController::class, 'store');
 $router->post('/mahasiswa/update/{nim}', MahasiswaController::class, 'update');
 $router->post('/mahasiswa/delete/{nim}', MahasiswaController::class, 'delete');
+
+$router->get('/krs', KRSController::class, 'index');
+$router->post('/krs/store', KRSController::class, 'store');
+$router->post('/krs/update/{kode}', KRSController::class, 'update');
+$router->post('/krs/delete/{kode}', KRSController::class, 'delete');
 
 $router->run();

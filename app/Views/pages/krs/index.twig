@@ -1,0 +1,173 @@
+{% extends 'layouts/base.twig' %}
+
+{% block title %}KRS{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <h3 class="text-dark mb-4">Kartu Rencana Studi</h3>
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <p class="text-primary m-0 fw-bold">Tabel KRS</p>
+            </div>
+            <div class="card-body">
+                <div class="mb-3"><button class="btn btn-info" type="button" data-action="create" data-bs-toggle="modal" data-bs-target="#modal-form-krs">+ Tambah KRS</button></div>
+
+                {% if session('message') is not empty %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle flex-shrink-0 me-2"></i> {{ session_flash('message') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+
+                {% if session('error') is not empty %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-triangle flex-shrink-0 me-2"></i> {{ session_flash('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Kode</th>
+                            <th>NIM</th>
+                            <th>Mata Kuliah</th>
+                            <th>Nama Kelas</th>
+                            <th>SKS</th>
+                            <th>Jadwal</th>
+                            <th>Dosen Pengajar</th>
+                            <th>Keterangan</th>
+                            <th width="100"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set no = (10 * (page-1)) + 1 %}
+                        {% for krs in records %}
+                            <tr>
+                                <td>{{ no }}</td>
+                                <td>{{ krs['kode'] }}</td>
+                                <td>{{ krs['nim'] }}</td>
+                                <td>{{ krs['mata_kuliah'] }}</td>
+                                <td>{{ krs['kelas'] }}</td>
+                                <td>{{ krs['sks'] }}</td>
+                                <td>{{ krs['jadwal'] }}</td>
+                                <td>{{ krs['dosen'] }}</td>
+                                <td>{{ krs['keterangan'] ? krs['keterangan'] : '-' }}</td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm" type="button"
+                                            data-action="update"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modal-form-krs"
+                                            data-kode="{{ krs['kode'] }}"
+                                            data-nim="{{ krs['nim'] }}"
+                                            data-matkul="{{ krs['mata_kuliah'] }}"
+                                            data-kelas="{{ krs['kelas'] }}"
+                                            data-sks="{{ krs['sks'] }}"
+                                            data-jadwal="{{ krs['jadwal'] }}"
+                                            data-dosen="{{ krs['dosen'] }}"
+                                            data-keterangan="{{ krs['keterangan'] }}"
+                                    >
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm ms-1" type="button"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modal-delete-krs"
+                                            data-kode="{{ krs['kode'] }}"
+                                    >
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% set no = no + 1 %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+                            <a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a>
+                        </li>
+                        {% for i in 1..total_pages %}
+                            <li class="page-item {% if page == i %}active{% endif %}">
+                                <a class="page-link" href="/krs?page={{ i }}">{{ i }}</a>
+                            </li>
+                        {% endfor %}
+                        <li class="page-item {% if page >= total_pages %}disabled{% endif %}">
+                            <a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    {{ include('pages/krs/modal.twig') }}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+      const form = document.getElementById('form-krs')
+      const formModal = document.getElementById('modal-form-krs')
+      const deleteModal = document.getElementById('modal-delete-krs')
+      const formDelete = document.getElementById('delete-form')
+      const btnDelete =document.getElementById('btn-delete-form')
+
+      // handle modal
+      formModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget
+        const modalTitle = formModal.querySelector('.modal-title')
+        const action = button.getAttribute('data-action')
+        const input_kode = document.getElementById('input-kode')
+        const input_nim = document.getElementById('input-nim')
+        const input_matkul = document.getElementById('input-matkul')
+        const input_kelas = document.getElementById('input-kelas')
+        const input_sks = document.getElementById('input-sks')
+        const input_jadwal = document.getElementById('input-jadwal')
+        const input_dosen = document.getElementById('input-dosen')
+        const input_keterangan = document.getElementById('input-keterangan')
+
+        if (action === 'create') {
+          modalTitle.textContent = 'Tambah KRS'
+          form.setAttribute('action', '/krs/store')
+
+          input_kode.value = ''
+          input_kode.removeAttribute('disabled')
+          input_nim.value = ''
+          input_matkul.value = ''
+          input_kelas.value = ''
+          input_sks.value = ''
+          input_jadwal.value = ''
+          input_dosen.value = ''
+          input_keterangan.value = ''
+        } else {
+          modalTitle.textContent = 'Edit KRS'
+          form.setAttribute('action', '/krs/update/' + button.getAttribute('data-kode'))
+
+          input_kode.value = button.getAttribute('data-kode')
+          input_kode.setAttribute('disabled', 'true')
+          input_nim.value = button.getAttribute('data-nim')
+          input_matkul.value = button.getAttribute('data-matkul')
+          input_kelas.value = button.getAttribute('data-kelas')
+          input_sks.value = button.getAttribute('data-sks')
+          input_jadwal.value = button.getAttribute('data-jadwal')
+          input_dosen.value = button.getAttribute('data-dosen')
+          input_keterangan.value = button.getAttribute('data-keterangan')
+        }
+      })
+
+      deleteModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget
+        const kode = button.getAttribute('data-kode')
+
+        document.getElementById('delete-krs-confirm').innerText = kode
+        document.getElementById('input-kode-delete').value = kode
+        formDelete.setAttribute('action', '/krs/delete/' + kode)
+      })
+
+      btnDelete.addEventListener('click', event => {
+        formDelete.submit()
+      })
+    </script>
+{% endblock %}
