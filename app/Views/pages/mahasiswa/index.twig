@@ -1,0 +1,184 @@
+{% extends 'layouts/base.twig' %}
+
+{% block title %}Mahasiswa{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <h3 class="text-dark mb-4">Mahasiswa</h3>
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <p class="text-primary m-0 fw-bold">Tabel Mahasiswa</p>
+            </div>
+            <div class="card-body">
+                <div class="mb-3"><button class="btn btn-info" type="button" data-action="create" data-bs-toggle="modal" data-bs-target="#modal-form-mahasiswa">+ Tambah Mahasiswa</button></div>
+
+                {% if session('message') is not empty %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle flex-shrink-0 me-2"></i> {{ session_flash('message') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+
+                {% if session('error') is not empty %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-triangle flex-shrink-0 me-2"></i> {{ session_flash('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>NIM</th>
+                            <th>Nama</th>
+                            <th>Jenjang</th>
+                            <th>Program Studi</th>
+                            <th>Masuk</th>
+                            <th>Status</th>
+                            <th>Smt</th>
+                            <th>SKS</th>
+                            <th>IPK</th>
+                            <th width="100"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for mahasiswa in records %}
+                            <tr>
+                                <td>{{ mahasiswa['nim'] }}</td>
+                                <td>{{ mahasiswa['nama'] }}</td>
+                                <td>{{ mahasiswa['jenjang'] }}</td>
+                                <td>{{ mahasiswa['program_studi'] }}</td>
+                                <td>{{ mahasiswa['tahun_masuk'] }}</td>
+                                <td>{{ mahasiswa['status'] == 'aktif'? 'Aktif' : 'Non Aktif' }}</td>
+                                <td>{{ mahasiswa['semester'] }}</td>
+                                <td>{{ mahasiswa['sks'] }}</td>
+                                <td>{{ mahasiswa['ipk'] }}</td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm" type="button"
+                                            data-action="update"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modal-form-mahasiswa"
+                                            data-nim="{{ mahasiswa['nim'] }}"
+                                            data-nama="{{ mahasiswa['nama'] }}"
+                                            data-jenjang="{{ mahasiswa['jenjang'] }}"
+                                            data-program_studi="{{ mahasiswa['program_studi'] }}"
+                                            data-tahun_masuk="{{ mahasiswa['tahun_masuk'] }}"
+                                            data-status="{{ mahasiswa['status'] }}"
+                                            data-semester="{{ mahasiswa['semester'] }}"
+                                            data-sks="{{ mahasiswa['sks'] }}"
+                                            data-ipk="{{ mahasiswa['ipk'] }}"
+                                    >
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm ms-1" type="button"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modal-delete-mahasiswa"
+                                            data-nim="{{ mahasiswa['nim'] }}"
+                                            data-nama="{{ mahasiswa['nama'] }}"
+                                    >
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+                            <a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a>
+                        </li>
+                        {% for i in 1..total_pages %}
+                            <li class="page-item {% if page == i %}active{% endif %}">
+                                <a class="page-link" href="/mahasiswa?page={{ i }}">{{ i }}</a>
+                            </li>
+                        {% endfor %}
+                        <li class="page-item {% if page >= total_pages %}disabled{% endif %}">
+                            <a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    {{ include('pages/mahasiswa/modal.twig') }}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+      const form = document.getElementById('form-mahasiswa')
+      const formModal = document.getElementById('modal-form-mahasiswa')
+      const deleteModal = document.getElementById('modal-delete-mahasiswa')
+      const formDelete = document.getElementById('delete-form')
+      const btnDelete =document.getElementById('btn-delete-form')
+
+      // handle modal
+      formModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget
+        const modalTitle = formModal.querySelector('.modal-title')
+        const action = button.getAttribute('data-action')
+        const input_nim = document.getElementById('input-nim')
+        const input_nama = document.getElementById('input-nama')
+        const input_jenjang = document.getElementById('input-jenjang')
+        const input_prodi = document.getElementById('input-prodi')
+        const input_tahun_masuk = document.getElementById('input-tahun-masuk')
+        const input_semester = document.getElementById('input-semester')
+        const input_sks = document.getElementById('input-sks')
+        const input_ipk = document.getElementById('input-ipk')
+
+        const status_aktif = document.getElementById('radio-status-aktif')
+        const status_non_aktif = document.getElementById('radio-status-non-aktif')
+
+        if (action === 'create') {
+          modalTitle.textContent = 'Tambah Mahasiswa'
+          form.setAttribute('action', '/mahasiswa/store')
+
+          input_nim.value = ''
+          input_nim.removeAttribute('disabled')
+          input_nama.value = ''
+          input_jenjang.value = 'S1'
+          input_prodi.value = 'Informatika'
+          input_tahun_masuk.value = ''
+          input_semester.value = ''
+          input_sks.value = ''
+          input_ipk.value = ''
+
+          status_aktif.checked = true
+          status_non_aktif.checked = false
+        } else {
+          modalTitle.textContent = 'Edit Mahasiswa'
+          form.setAttribute('action', '/mahasiswa/update/' + button.getAttribute('data-nim'))
+
+          input_nim.value = button.getAttribute('data-nim')
+          input_nim.setAttribute('disabled', 'true')
+          input_nama.value = button.getAttribute('data-nama')
+          input_jenjang.value = button.getAttribute('data-jenjang')
+          input_prodi.value = button.getAttribute('data-program_studi')
+          input_tahun_masuk.value = button.getAttribute('data-tahun_masuk')
+          input_semester.value = button.getAttribute('data-semester')
+          input_sks.value = button.getAttribute('data-sks')
+          input_ipk.value = button.getAttribute('data-ipk')
+
+          const status_mahasiswa = button.getAttribute('data-status')
+          status_aktif.checked = status_mahasiswa === 'aktif'
+          status_non_aktif.checked = status_mahasiswa === 'tidak_aktif'
+        }
+      })
+
+      deleteModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget
+        const nim = button.getAttribute('data-nim')
+        const nama = button.getAttribute('data-nama')
+
+        document.getElementById('delete-mahasiswa-confirm-name').innerText = `${nama} (${nim})`
+        document.getElementById('input-nim-delete').value = nim
+        formDelete.setAttribute('action', '/mahasiswa/delete/' + nim)
+      })
+
+      btnDelete.addEventListener('click', event => {
+        formDelete.submit()
+      })
+    </script>
+{% endblock %}

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d16de303fc16d0ad5275633d39bd6053",
+    "content-hash": "b63c11ebdbc0f00c0f655da46537aa14",
     "packages": [
         {
             "name": "erickfirmo/router",
@@ -689,7 +689,9 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-pdo": "*"
+    },
     "platform-dev": [],
     "plugin-api-version": "2.2.0"
 }

@@ -13,6 +13,14 @@ abstract class Controller
 
         $twig = new \Twig\Environment($loader, ['cache' => $view_cache]);
 
+        $twig->addFunction(new \Twig\TwigFunction('session', function ($key) {
+            return session($key);
+        }));
+
+        $twig->addFunction(new \Twig\TwigFunction('session_flash', function ($key) {
+            return session_flash($key);
+        }));
+
         return $twig->render($view . '.twig', $data);
     }
 }

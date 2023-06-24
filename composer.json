@@ -5,7 +5,8 @@
     "require": {
         "erickfirmo/router": "^1.1",
         "twig/twig": "^3.0",
-        "vlucas/phpdotenv": "^5.5"
+        "vlucas/phpdotenv": "^5.5",
+        "ext-pdo": "*"
     },
     "authors": [
         {
