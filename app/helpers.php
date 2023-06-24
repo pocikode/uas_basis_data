@@ -39,3 +39,13 @@ if (!function_exists('session_flash')) {
         return null;
     }
 }
+
+if (!function_exists('is_route')) {
+    function is_route($name): bool
+    {
+        $explodePath = explode('/', $_SERVER['REQUEST_URI']);
+        $menuPath = strtok($explodePath[1], '?');
+
+        return $name == $menuPath;
+    }
+}

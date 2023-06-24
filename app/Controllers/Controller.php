@@ -21,6 +21,10 @@ abstract class Controller
             return session_flash($key);
         }));
 
+        $twig->addFunction(new \Twig\TwigFunction('is_route', function ($name) {
+            return is_route($name);
+        }));
+
         return $twig->render($view . '.twig', $data);
     }
 }

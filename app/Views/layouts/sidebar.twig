@@ -2,10 +2,10 @@
     <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#"><img class="pnj-logo-sidebar" src="assets/img/upj.png?h=a81a0ad53a06bedd2306eec607876505"></a>
         <hr class="sidebar-divider my-0">
         <ul class="navbar-nav text-light" id="accordionSidebar">
-            <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="/mahasiswa"><i class="fas fa-users"></i><span>Mahasiswa</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="/krs"><i class="fas fa-file-alt"></i><span>Kartu Rencana Studi</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="/khs"><i class="fas fa-file-alt"></i><span>Kartu Hasil Studi</span></a></li>
+            <li class="nav-item"><a class="nav-link {{ is_route('') ? 'active': '' }}" href="/"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+            <li class="nav-item"><a class="nav-link {{ is_route('mahasiswa') ? 'active': '' }}" href="/mahasiswa"><i class="fas fa-users"></i><span>Mahasiswa</span></a></li>
+            <li class="nav-item"><a class="nav-link {{ is_route('krs') ? 'active': '' }}" href="/krs"><i class="fas fa-file-alt"></i><span>Kartu Rencana Studi</span></a></li>
+            <li class="nav-item"><a class="nav-link {{ is_route('khs') ? 'active': '' }}" href="/khs"><i class="fas fa-file-alt"></i><span>Kartu Hasil Studi</span></a></li>
         </ul>
         <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
     </div>
