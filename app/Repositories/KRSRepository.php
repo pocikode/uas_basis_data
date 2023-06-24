@@ -25,10 +25,7 @@ class KRSRepository
 
     public function paginate($page = 1, $limit = 10): array
     {
-        $query = DB::getInstance()
-            ->query("SELECT count(kode) AS total_krs FROM kartu_rencana_studi")
-            ->fetchAll();
-        $total_records = $query[0]['total_krs'];
+        $total_records = $this->total_records();
 
         return [
             'page' => $page,
@@ -36,6 +33,15 @@ class KRSRepository
             'total_pages' => ceil($total_records / $limit),
             'records' => $this->fetch($page, $limit),
         ];
+    }
+
+    public function total_records()
+    {
+        $query = DB::getInstance()
+            ->query("SELECT count(kode) AS total_krs FROM kartu_rencana_studi")
+            ->fetchAll();
+
+        return $query[0]['total_krs'];
     }
 
     public function fetch($page = 1, $limit = 10): false|array

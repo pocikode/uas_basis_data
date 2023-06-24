@@ -26,10 +26,7 @@ class MahasiswaRepository
 
     public function paginate($page = 1, $limit = 10): array
     {
-        $query = DB::getInstance()
-            ->query("SELECT count(nim) AS total_nim FROM mahasiswa")
-            ->fetchAll();
-        $total_records = $query[0]['total_nim'];
+        $total_records = $this->total_records();
 
         return [
             'page' => $page,
@@ -37,6 +34,15 @@ class MahasiswaRepository
             'total_pages' => ceil($total_records / $limit),
             'records' => $this->fetch($page, $limit),
         ];
+    }
+
+    public function total_records()
+    {
+        $query = DB::getInstance()
+            ->query("SELECT count(nim) AS total_nim FROM mahasiswa")
+            ->fetchAll();
+
+        return $query[0]['total_nim'];
     }
 
     public function fetch($page = 1, $limit = 10): false|array
