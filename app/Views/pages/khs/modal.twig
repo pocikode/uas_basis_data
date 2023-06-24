@@ -1,0 +1,74 @@
+<div class="modal fade" role="dialog" tabindex="-1" id="modal-form-krs">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Tambah Kartu Hasil Studi</h4><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-krs" method="post" action="">
+                    <div class="row">
+                        <div class="col col-md-6 mb-3">
+                            <label class="form-label" for="input-kode">Kode</label>
+                            <input class="form-control" type="text" id="input-kode" placeholder="Input Kode" name="kode" maxlength="25" required>
+                        </div>
+                        <div class="col col-md-6 mb-3">
+                            <label class="form-label" for="input-nim">NIM</label>
+                            <input class="form-control" type="number" id="input-nim" placeholder="Input NIM" name="nim" required>
+                        </div>
+                        <div class="col col-md-6 mb-3">
+                            <label class="form-label" for="input-matkul">Mata Kuliah</label>
+                            <input class="form-control" type="text" id="input-matkul" placeholder="Input Mata Kuliah" name="matkul" maxlength="100" required>
+                        </div>
+                        <div class="col col-md-6 mb-3">
+                            <label class="form-label" for="input-sks">SKS</label>
+                            <input class="form-control" type="number" id="input-sks" placeholder="Input SKS" name="sks" max="50" required>
+                        </div>
+                        <div class="col col-md-6 mb-3">
+                            <label class="form-label" for="input-nilai-mutu">Nilai Mutu</label>
+                            <input class="form-control" type="number" id="input-nilai-mutu" placeholder="Input Nilai Mutu" name="nilai_mutu" max="100" required>
+                        </div>
+                        <div class="col col-md-6 mb-3">
+                            <label class="form-label" for="input-bobot">Bobot</label>
+                            <input class="form-control" type="number" id="input-bobot" placeholder="Input Bobot" name="bobot" max="100" required>
+                        </div>
+                        <div class="col col-md-6 mb-3">
+                            <label class="form-label" for="input-nilai">Nilai</label>
+                            <input class="form-control" type="number" id="input-nilai" placeholder="Input Nilai" name="nilai" max="100" required>
+                        </div>
+                        <div class="col col-md-6 mb-3">
+                            <label class="form-label" for="input-keterangan">Keterangan</label>
+                            <textarea name="keterangan" id="input-keterangan" class="form-control" rows="3" placeholder="Keterangan bebas"></textarea>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-light me-2" type="button" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-primary ms-2" id="btn-submit-form" type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" role="dialog" tabindex="-1" id="modal-delete-krs">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center mt-3">
+                    <i class="d-block mb-5 fas fa-exclamation-triangle fa-5x text-warning"></i>
+                    <div class="mb-5">
+                        <h4 class="fs-6">Apakah anda yakin akan menghapus data</h4>
+                        Kartu Hasil Studi <span id="delete-krs-confirm" class="fw-bold fs-6">KRS-001</span>?
+                    </div>
+                </div>
+                <form action="/khs/delete" method="post" class="d-none" id="delete-form">
+                    <input type="hidden" name="nim" id="input-kode-delete" value="">
+                </form>
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-light me-2" type="button" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-danger ms-2" id="btn-delete-form" type="button">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

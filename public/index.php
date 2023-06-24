@@ -7,6 +7,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 
 use App\Controllers\HomeController;
+use App\Controllers\KHSController;
 use App\Controllers\KRSController;
 use App\Controllers\MahasiswaController;
 
@@ -25,5 +26,10 @@ $router->get('/krs', KRSController::class, 'index');
 $router->post('/krs/store', KRSController::class, 'store');
 $router->post('/krs/update/{kode}', KRSController::class, 'update');
 $router->post('/krs/delete/{kode}', KRSController::class, 'delete');
+
+$router->get('/khs', KHSController::class, 'index');
+$router->post('/khs/store', KHSController::class, 'store');
+$router->post('/khs/update/{kode}', KHSController::class, 'update');
+$router->post('/khs/delete/{kode}', KHSController::class, 'delete');
 
 $router->run();
